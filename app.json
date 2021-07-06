@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "turnoverbnb",
+    "slug": "turnoverbnb",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  },
+  "name": "turnoverbnb"
+}
