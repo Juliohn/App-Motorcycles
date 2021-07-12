@@ -4,8 +4,8 @@ import { RFValue } from 'react-native-responsive-fontsize';
 import {Dimensions ,FlatList} from 'react-native'
 
 export const Container = styled.View`
-  flex:1;
-  background-color: ${({theme}) => theme.colors.background_secondary};  
+  flex:1;    
+  background-color: ${({theme}) => theme.colors.background_primary};  
 `;
 
 export const BackWrapper = styled.View`
@@ -13,11 +13,7 @@ export const BackWrapper = styled.View`
   margin-left: 12px;
   margin-right: ${RFValue(95)}px;    
 `;
-// export const Header = styled.View`
-//   flex-direction:row;
-//   justify-content: space-between;
-//   align-items: center;    
-// `;
+
 export const Header = styled.View`  
   width:100%;  
   background-color: ${({theme}) => theme.colors.header};

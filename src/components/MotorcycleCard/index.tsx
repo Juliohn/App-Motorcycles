@@ -24,7 +24,7 @@ export function MotorcycleCard({data, ...rest} : Props){
       <Code>{data.code}</Code> 
       <Name>{data.name}</Name>
       <Price>{data.price}</Price>
-      <QuantityStock> {`${data.stock} em estoque`}</QuantityStock>      
+      <QuantityStock> {`${data.stock} in stock`}</QuantityStock>      
     </Details>
      <Avatar
       resizeMode="contain"

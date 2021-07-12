@@ -131,8 +131,7 @@ export default function Detail(){
     );
   };
 
-  function handleDeleteStockMotorcycle(stock_motorcycle:MotorcycleStockDTO){        
-    console.log(stock_motorcycle)
+  function handleDeleteStockMotorcycle(stock_motorcycle:MotorcycleStockDTO){            
     Alert.alert(
       "",
       "Delete this "+ stock_motorcycle.operation_show+" of the "+stock_motorcycle.quantity+ " item(s) ?" ,
@@ -210,12 +209,12 @@ export default function Detail(){
 
       {loadingStock ? 
         <Load /> :
-        <QuantityStock> {`${stock} em estoque`}</QuantityStock>
+        <QuantityStock> {`${stock} in stock`}</QuantityStock>
       }
     </Details>
 
     <SubtitleWrapper>
-      <Subtitle>Histórico do Estoque</Subtitle>
+      <Subtitle>Stock History</Subtitle>
     </SubtitleWrapper>
 
     { loading ? 

@@ -16,6 +16,7 @@ export const Container = styled(RectButton)<Props>`
   justify-content:center;
   align-items: center;
   padding: ${RFValue(10)}px;    
+ 
 
   ${({type}) =>type === 'details' && css`
       background-color: ${({theme}) => theme.colors.title};

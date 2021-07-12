@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useRef } from 'react';
 import { StatusBar,Button, Image, View, Platform, Alert ,TouchableWithoutFeedback,Keyboard} from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import {useForm} from 'react-hook-form';
+
+
 
 import * as Yup from 'yup';
 import {yupResolver} from '@hookform/resolvers/yup'
@@ -9,6 +11,7 @@ import {yupResolver} from '@hookform/resolvers/yup'
 import * as ImagePicker from 'expo-image-picker';
 
 import InputForm from '../../components/Form/InputForm';
+import InputFormMoney from '../../components/Form/InputFormMoney';
 import SendButton from '../../components/Form/Button';
 import BackButton from '../../components/BackButton'
 import { MotorcycleDTO } from '../../dtos/MotorcycleDto';
@@ -40,9 +43,8 @@ const schema = Yup.object().shape({
   .string()
   .required('Name is required'),
   price:Yup
-  .number()
-  .typeError('Price require a money value')  
-  .positive('Accept only price positive')
+  .string()
+  .typeError('Price require a money value')    
   .required('Price is required'),  
 });
 
@@ -54,7 +56,8 @@ export default function Edit(){
   const navigation = useNavigation();
   const route = useRoute();
   const {motorcycle} = route.params as Params;
-  
+  const priceRef = useRef();
+
   const [image, setImage] = useState(null);
   const [id, setId] = useState(motorcycle.id);
   const [editMotorcycle, setEditMotorcycle] = useState(motorcycle);
@@ -73,7 +76,7 @@ export default function Edit(){
   useEffect(() => {
 
     setValue('name',editMotorcycle.name);
-    setValue('price',editMotorcycle.price.replace('R$', '').replace('.', '').replace(',', '.'));
+    setValue('price',editMotorcycle.price);
 
 
     (async () => {
@@ -93,9 +96,7 @@ export default function Edit(){
       aspect: [4, 3],
       quality: 1,
       base64:true
-    });
-
-    //console.log(result);
+    });    
 
     if (!result.cancelled) {
       setImage(result);
@@ -107,14 +108,17 @@ export default function Edit(){
   }
 
   async function handleUpdate(form:FormObject){
-        
+    
+
     try {
-      var data = {        
+      var editData = {        
         name:form.name,
-        price:form.price,
+        price:form.price.replace('$ ', '').replace(',', ''),
         avatar: image ? image.base64 :"",        
-      }                 
-      const response = await api.put(`/motorcycles/${id}`,data);  
+      }    
+            
+      
+      const response = await api.put(`/motorcycles/${id}`,editData);  
             
       Alert.alert(
         "",
@@ -162,12 +166,11 @@ export default function Edit(){
           placeholder='Name'          
           error={errors.name && errors.name.message}/>   
 
-        <InputForm
-          // defaultValue={motorcycle.price.replace('R$', '').replace('.', '').replace(',', '.')}
+        <InputFormMoney          
           name="price"
           control={control}
           placeholder='Price'          
-          error={errors.price && errors.price.message}/>                  
+          error={errors.price && errors.price.message}/>               
 
 
         <ButtonImageWrapper>

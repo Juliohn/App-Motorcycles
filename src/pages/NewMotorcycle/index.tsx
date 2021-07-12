@@ -10,6 +10,7 @@ import * as ImagePicker from 'expo-image-picker';
 
 
 import InputForm from '../../components/Form/InputForm';
+import InputFormMoney from '../../components/Form/InputFormMoney';
 import SendButton from '../../components/Form/Button';
 import BackButton from '../../components/BackButton'
 import { MotorcycleDTO } from '../../dtos/MotorcycleDto';
@@ -40,9 +41,8 @@ const schema = Yup.object().shape({
   .string()
   .required('Name is required'),
   price:Yup
-  .number()
-  .typeError('Price require a money value')  
-  .positive('Accept only price positive')
+  .string()
+  .typeError('Price require a money value')    
   .required('Price is required'),
   quantity:Yup
   .number()
@@ -101,11 +101,12 @@ export default function New(){
     
     try {
       const newData = {
-        name:form.name,
-        price:form.price,
+        name:form.name,        
+        price:form.price.replace('$ ', '').replace(',', ''),
         quantity:form.quantity,   
-        avatar:image.base64        
+        avatar:image.base64
       }           
+
       const response = await api.post('/motorcycles',newData);  
 
       const { data } = response;  
@@ -156,7 +157,7 @@ export default function New(){
           placeholder='Name'          
           error={errors.name && errors.name.message}/>   
 
-        <InputForm
+        <InputFormMoney
           name="price"
           control={control}
           placeholder='Price'          

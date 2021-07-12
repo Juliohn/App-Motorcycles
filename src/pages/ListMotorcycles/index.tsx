@@ -39,7 +39,8 @@ export default function ListData() {
   
   if (params !== undefined) {
     if (params.action === 'refresh') {        
-        refresh();        
+        refresh();
+        setNoData(false);
         params.action = null;        
     }  
   }
