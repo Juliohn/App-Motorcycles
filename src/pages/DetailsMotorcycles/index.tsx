@@ -49,7 +49,7 @@ export default function Detail(){
   
   if (params !== undefined) {
     if (params.action === 'refresh') {               
-        refresh();        
+        refresh();      
         params.action = null;        
     }  
   }  
@@ -117,7 +117,13 @@ export default function Detail(){
 
   async function refreshStock(){                
       const response = await api.get(`/motorcycles/${motorcycle.id}`);       
-      setStock(response.data.stock);      
+      setStock(response.data.stock);
+      if(response.data.stock == 0){
+        setNoData(true);
+      }else{
+        setNoData(false);
+      }
+      
   }
 
   function renderFooter(){
