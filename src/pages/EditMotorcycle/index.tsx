@@ -10,11 +10,12 @@ import {yupResolver} from '@hookform/resolvers/yup'
 
 import * as ImagePicker from 'expo-image-picker';
 
+import { MotorcycleDTO } from '../../dtos/MotorcycleDto';
 import InputForm from '../../components/Form/InputForm';
 import InputFormMoney from '../../components/Form/InputFormMoney';
 import SendButton from '../../components/Form/Button';
 import BackButton from '../../components/BackButton'
-import { MotorcycleDTO } from '../../dtos/MotorcycleDto';
+import  Load  from '../../components/Load';
 
 import {
  Container,
@@ -59,6 +60,7 @@ export default function Edit(){
   const priceRef = useRef();
 
   const [image, setImage] = useState(null);
+  const [sending,setSending] = useState(false);
   const [id, setId] = useState(motorcycle.id);
   const [editMotorcycle, setEditMotorcycle] = useState(motorcycle);
 
@@ -117,9 +119,9 @@ export default function Edit(){
         avatar: image ? image.base64 :"",        
       }    
             
-      
+      setSending(true);
       const response = await api.put(`/motorcycles/${id}`,editData);  
-            
+      setSending(false);     
       Alert.alert(
         "",
         response.data.msg,
@@ -183,8 +185,11 @@ export default function Edit(){
           </ButtonImageWrapper>
                  
       </Fields>
-    
-      <SendButton title="Update" onPress={handleSubmit(handleUpdate)}/> 
+
+      {sending ? <Load /> :
+       <SendButton title="Update" onPress={handleSubmit(handleUpdate)}/> 
+      }
+          
     </Form>
      
   </Container>

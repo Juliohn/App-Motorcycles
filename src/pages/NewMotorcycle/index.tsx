@@ -13,7 +13,7 @@ import InputForm from '../../components/Form/InputForm';
 import InputFormMoney from '../../components/Form/InputFormMoney';
 import SendButton from '../../components/Form/Button';
 import BackButton from '../../components/BackButton'
-import { MotorcycleDTO } from '../../dtos/MotorcycleDto';
+import  Load  from '../../components/Load';
 
 import {
  Container,
@@ -54,6 +54,7 @@ const schema = Yup.object().shape({
 export default function New(){
   const navigation = useNavigation();
   const [image, setImage] = useState(null);
+  const [sending,setSending] = useState(false);
 
   const {
     control,
@@ -107,8 +108,9 @@ export default function New(){
         avatar:image.base64
       }           
 
+      setSending(true);
       const response = await api.post('/motorcycles',newData);  
-
+      setSending(false);
       const { data } = response;  
 
       Alert.alert(
@@ -183,8 +185,9 @@ export default function New(){
       </Fields>
 
 
-
-      <SendButton title="Save" onPress={handleSubmit(handleSave)}/> 
+      {sending ? <Load /> :
+       <SendButton title="Save" onPress={handleSubmit(handleSave)}/> 
+      }
     </Form>
      
   </Container>

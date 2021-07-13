@@ -6,12 +6,15 @@ import {useForm} from 'react-hook-form';
 import * as Yup from 'yup';
 import {yupResolver} from '@hookform/resolvers/yup'
 
-import BackButton from '../../components/BackButton';
-import InputForm from '../../components/Form/InputForm';
-import Button from '../../components/Form/Button';
-import OperationTypeButton from '../../components/Form/OperationTypeButton';
-
 import { MotorcycleDTO } from '../../dtos/MotorcycleDto';
+
+import InputForm from '../../components/Form/InputForm';
+import SendButton from '../../components/Form/Button';
+import BackButton from '../../components/BackButton';
+import OperationTypeButton from '../../components/Form/OperationTypeButton';
+import  Load  from '../../components/Load';
+
+
 
 
 import {
@@ -50,6 +53,7 @@ export default function New(){
   const route = useRoute();
   const {motorcycle} = route.params as Params;
 
+  const [sending,setSending] = useState(false);
   const [ operationType, setOperationType] = useState('');
   const [referenceMotorcycle, setReferenceMotorcycle] = useState(motorcycle);
 
@@ -83,8 +87,10 @@ export default function New(){
         operation: operationType == 'up' ? 1 : 2
       }           
       
+      setSending(true);
       const response = await api.post('/stock-motorcycles',newData); 
-      
+      setSending(false);
+
       const { data } = response;      
 
       Alert.alert(
@@ -162,7 +168,10 @@ export default function New(){
             keyboardType="numeric"
             error={errors.quantity && errors.quantity.message}/>   
         </Fields>
-        <Button onPress={handleSubmit(handleSave)} title="Save" /> 
+
+        {sending ? <Load /> :
+          <SendButton onPress={handleSubmit(handleSave)} title="Save" /> 
+        }
       </Form>
       
     </Container>
